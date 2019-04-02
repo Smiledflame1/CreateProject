@@ -57,12 +57,24 @@ def stats():
     print(Def)
     print("")
 
+def battle_floor1():
+    def Wolf_Battle():
+        wolf_dmg = 14
+        wolf_hp = 80
+        wolf_def = 0
+        print("A Large Wolf attacks you!")
+        def Player_Atk():
+            player_choice = input("What will you do Attack, Defend, Focus, or Heal").lower().strip()
+            if player_choice = 
+      
+            
+
 
 
           
 def intro():
     print("")
-    print("This is the story of when ,Jotoro a young man destined to battle the dastardly DIO, as he approaches DIO's castle in order to challenge him")
+    print("This is the story of when ,Jotaro a young man destined to battle the dastardly DIO, approaches DIO's castle in order to challenge him")
     print("")
     time.sleep(2)
     print("He emerged from the dark woods wearing his modified black trench coat and gold chain.")
@@ -71,7 +83,7 @@ def intro():
     print("Sporting his iconic black hat with gold trim he stands before the lumbering doors to DIO's magnificent palace")
     print("")
     time.sleep(2)
-    print("Jotoro pushes against the palace doors and they grind open.")
+    print("Jotaro pushes against the palace doors and they grind open.")
     print("")
     time.sleep(2)
     print("He was now delving into quite the bizzare adventure with his life on the line.")
@@ -79,6 +91,15 @@ def intro():
     time.sleep(2)
     print("He enters the dark palace when suddenly the walls burst with light as torches ignite.")
     print("")
+    time.sleep(2)
+    print("He enters further into the room looking around cautiously wary of any upcoming attacks.")
+    print("")
+    time.sleep(2)
+    print("He hears movement out of the corner of his eye, he jerks around desperatly attempting to catch full sight of this hidden creature")
+    print("")
+    time.sleep(2)
+    print("Then a growl as a shadowy figure leaps at Jotaro")
+    battle()
     
     
     
