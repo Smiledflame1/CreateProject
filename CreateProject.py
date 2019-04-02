@@ -5,7 +5,7 @@ import time
 #Base Stats
 Name = "Jotaro"
 Hp = 100
-Atk = 8
+Atk = 17
 Def = 10
 exp = 0
 #Stat Changes 
@@ -14,7 +14,9 @@ defchange = 0
 #Temperary Stats for while in battle
 TempAtk = Atk
 TempDef = Def
-TempHP = Hp 
+TempHP = Hp
+#BattleVariables
+
 
 
 instructions_message = """Hello and welcome to this action adventure game.
@@ -60,7 +62,7 @@ def stats():
           
 def intro():
     print("")
-    print("This is the story of when Jotoro a young man destined to battle the dastardly DIO approached DIO's castle in order to challenge him")
+    print("This is the story of when ,Jotoro a young man destined to battle the dastardly DIO, as he approaches DIO's castle in order to challenge him")
     print("")
     time.sleep(2)
     print("He emerged from the dark woods wearing his modified black trench coat and gold chain.")
@@ -72,10 +74,20 @@ def intro():
     print("Jotoro pushes against the palace doors and they grind open.")
     print("")
     time.sleep(2)
-    print
+    print("He was now delving into quite the bizzare adventure with his life on the line.")
+    print("")
+    time.sleep(2)
+    print("He enters the dark palace when suddenly the walls burst with light as torches ignite.")
+    print("")
+    
     
     
     
     
 print(instructions_message)
+Start = input("Do you wish to play the game (Y/N)").lower()
+if Start == "y":
+    intro()
+else:
+    print("Thats too bad. Have a nice day.")
 
