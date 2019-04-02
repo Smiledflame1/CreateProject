@@ -36,7 +36,6 @@ Attack deals your attack stat in damage to the enemy
 Defend increases your defense stat for that battle only
 Focus increases your attack stat for that battle only
 Heal restores the HP of your character but can only be uesd 3 times each fight
-The amount you heal, how much your Atk is raised, and how much your Def is raised is determined by your level
 All of your base stats reset to what they were before the battle so focus and defend dont carry over
 The way to progress through this game is to defeat a set amount of enemies per floor to fight the floor guardian.
 After defeating the floor guardian you move to the next floor to fight a new set of monsters.
@@ -58,18 +57,58 @@ def stats():
     print("")
 
 def battle_floor1():
+    Wolf_Battle()
+    
     def Wolf_Battle():
         wolf_dmg = 14
         wolf_hp = 80
         wolf_def = 0
         print("A Large Wolf attacks you!")
         def Player_Turn_Wolf():
-            player_choice = input("What will you do Attack, Defend, Focus, or Heal").lower().strip()
-            if player_choice = "attack":
-                wolf_hp = wolf_hp - (TempAtk - wolf_def)
-                print("You have dealt " + TempAtk + " damage to the wolf.")
-                print("The wolf now has " + wolf_hp + " left")
-                Wolf
+            if TempHp >= 0:
+                print("YOU HAVE DIED GAME OVER")
+            elif wolf_hp >= 0:
+                print("You have slain the wolf + " + str(15) + "exp points")
+            else:
+                player_choice = input("What will you do Attack, Defend, Focus, or Heal").lower().strip()
+                if player_choice == "attack":
+                    wolf_hp = wolf_hp - (TempAtk - wolf_def)
+                    print("You have dealt " + TempAtk + " damage to the wolf.")
+                    print("The wolf now has " + wolf_hp + " left")
+                    Wolf_Turn()
+                elif player_choice == "defend":
+                    TempDef = Def + 5
+                    print("Your defense has increased by 5")
+                    Wolf_Turn()
+                elif player_choice == "focus":
+                    TempAtk = Atk + 7
+                    print("Your attack has increased by 7")
+                    Wolf_Turn()
+                elif player_choice == "heal":
+                    TempHp = Hp + 18
+                    print("Your health points have been raised by 18")
+                    Wolf_Turn()
+                else:
+                    print("Please select an either Attack, Defend, Focus, or Heal")
+                    Player_Turn_Wolf()
+        def Wolf_Turn():
+            if TempHp >= 0:
+                print("YOU HAVE DIED GAME OVER")
+            elif wolf_hp >= 0:
+                print("You have slain the wolf + " + str(15) + "exp points")
+            else:
+                misschance = random.randint(1, 11)
+                if misschance >= 8:
+                    TempHp = TempHp - (wolf_dmg - TempDef)
+                    print("The wolf slashes and deals " + wolf_dmg - TempDef + " damage")
+                    Player_Turn_Wolf()
+                else:
+                    print("The wolf stumbles and misses its attack")
+                    Player_Turn_Wolf()
+            Player_Turn_Wolf()
+        
+            
+            
       
             
 
@@ -103,7 +142,7 @@ def intro():
     print("")
     time.sleep(2)
     print("Then a growl as a shadowy figure leaps at Jotaro")
-    battle()
+    battle_floor1()
     
     
     
