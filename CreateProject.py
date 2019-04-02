@@ -63,9 +63,13 @@ def battle_floor1():
         wolf_hp = 80
         wolf_def = 0
         print("A Large Wolf attacks you!")
-        def Player_Atk():
+        def Player_Turn_Wolf():
             player_choice = input("What will you do Attack, Defend, Focus, or Heal").lower().strip()
-            if player_choice = 
+            if player_choice = "attack":
+                wolf_hp = wolf_hp - (TempAtk - wolf_def)
+                print("You have dealt " + TempAtk + " damage to the wolf.")
+                print("The wolf now has " + wolf_hp + " left")
+                Wolf
       
             
 
