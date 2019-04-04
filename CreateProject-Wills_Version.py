@@ -1,18 +1,17 @@
 #Devan Scotto-Goon
 #3B
+
+# Imports
 import random
 import time
-#Base Stats
-Name = "Jotaro"
-Hp = 100
-Atk = 17
-Def = 3
-#Stat Changes 
-atkchange = 0
-defchange = 0
 
-#IsThePlayerAlive
-life = True
+# Don't need any global variables any more. However, global constants are fine! Thus, I'm going to leave
+# player and wolf names as globals since they're constant and we're never changing them.
+#
+# Also, it's typically convention to do globals a full caps just to distinguish them.
+PLAYER_NAME = "Jotaro"
+WOLF_NAME = "Good Boye" # I gave the wolf a new name too :P
+
 
 instructions_message = """Hello and welcome to this action adventure game.
 This will be your instructions for the game.
@@ -215,15 +214,15 @@ def attackObject(oldHp, attackerAtk, defenderDef, defenderName):
 
 
 def story1():
-  print("You stand over the corpse of the wolf, your breathing heavy from the first real battle in weeks.\n")
-  time.sleep(2)
-  print("You notice a door directly in front of you with words carved into it reading,\n")
-  time.sleep(2)
-  print("COME JOTARO IF YOU DARE\n")
-  time.sleep(2)
+    print("You stand over the corpse of the wolf, your breathing heavy from the first real battle in weeks.\n")
+    time.sleep(2)
+    print("You notice a door directly in front of you with words carved into it reading,\n")
+    time.sleep(2)
+    print("COME JOTARO IF YOU DARE\n")
+    time.sleep(2)
 
-#print(instructions_message)
-Start = "y" #input("Do you wish to play the game (Y/N)").lower()
+print(instructions_message)
+Start = input("Do you wish to play the game (Y/N)").lower()
 if Start == "y":
     #intro()
     playerWon = Wolf_Battle()
