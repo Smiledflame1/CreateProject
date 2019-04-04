@@ -182,11 +182,13 @@ def Minataur_Battle():
             return True
         
         # Now the wolf gets to try and kill us
-        playerHp = Wolf_Turn(playerHp, wolfAtk, playerDef)
+        playerHp = Minataur_Turn(playerHp, miniAtk, playerDef)
         
         # If we are dead, then we don't win :'(
         if (playerHp <= 0):
-            print("You ded, son.")
+            print("You lie on the ground beaten and battered the life fading from your body.\n")
+            print("'You were a tough opponent lord DIO was right to send me against you'\n")
+            print("You dont respond because you cant, you just lay there untill finally your eyes close forever\n")
             return False
 
     
@@ -236,14 +238,14 @@ def Minataur_Turn(oldPlayerHp, miniAtk, playerDef):
     misschance = random.randint(1, 11)
     if misschance <= 8:
         # Using max() so that we don't deal negative damage
-        damage = max(wolfAtk - playerDef, 0)
+        damage = max(miniAtk - playerDef, 0)
         newPlayerHp = oldPlayerHp - damage
     
-        print("The wolf slashes and deals " + str(damage) + " damage\n")
+        print("The Minitaurs fist strikes you dealing " + str(damage) + " damage\n")
         print("The player now has " + str(newPlayerHp) + " HP left\n")
         
     else:
-        print("The wolf stumbles and misses its attack")
+        print("In the Minitaurs arrogence he taunts you instead of attacking\n")
         
               
 def intro():
