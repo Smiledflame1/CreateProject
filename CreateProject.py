@@ -1,20 +1,19 @@
 #Devan Scotto-Goon
 #3B
+
+# Imports
 import random
 import time
-#Base Stats
-Name = "Jotaro"
-Hp = 100
-Atk = 17
-Def = 3
-#Stat Changes 
-atkchange = 0
-defchange = 0
 
-#IsThePlayerAlive
-life = True
+# Don't need any global variables any more. However, global constants are fine! Thus, I'm going to leave
+# player and wolf names as globals since they're constant and we're never changing them.
+#
+# Also, it's typically convention to do globals a full caps just to distinguish them.
+PLAYER_NAME = "Jotaro"
+WOLF_NAME = "Good Boy" # I gave the wolf a new name too :P
+MINATAUR_NAME = "Bigoddeggleston" #Minataur's name
 
-instructions_message = """Hello and welcome to this action adventure game.
+INSTRUCTIONS_MESSAGE = """Hello and welcome to this action adventure game.
 This will be your instructions for the game.
 This will be your only time to view the instructions so please do pay attention and go slow.
 Your stats are made up of three different catagories Health Points(HP), Attack(ATK), and Defense(DEF)
@@ -35,6 +34,22 @@ Please have fun and enjoy the game.
 To view your stats at any time type stats() and your stats page will apear.
 """
 
+# It's a good habit to put the lowest level instructions in a function. Typically, that function is 
+# called main(). We call main() at the end of this file
+def main():
+    Minataur_Battle()
+    #print(INSTRUCTIONS_MESSAGE)
+    #Start = input("Do you wish to play the game (Y/N)").lower()
+    #if Start == "y":
+        #intro()
+        #playerWon = Wolf_Battle()
+        #while playerWon == True:
+          #story1()
+            
+    #else:
+        #print("Thats too bad. Have a nice day.")
+        
+
 def stats():
     print("STATS:")
     print("")
@@ -50,65 +65,187 @@ def stats():
     
 def Wolf_Battle():
     print("A Large Wolf attacks you!")
-    Player_Turn_Wolf()
-
-def Player_Turn_Wolf():
-        global Hp
-        global Atk
-        global Def
-        global life
-        wolf_dmg = 14
-        wolf_hp = 80
-        wolf_def = 0
-        player_choice = input("What will you do Attack, Defend, Focus, or Heal\n").lower().strip()
+    
+    # Set the hp, attack, and defense for the player and wolf
+    playerName = PLAYER_NAME # using our global
+    playerHp = 100
+    playerAtk = 17
+    playerDef = 3
+    
+    wolfName = WOLF_NAME # using our global
+    wolfHp = 80
+    wolfAtk = 11
+    wolfDef = 0
+    
+    # We want to loop until we explictly reach a conclusion from within the loop
+    while (True):
+        # Get the player's action choice. This function should always give us a valid value
+        player_choice = Get_Player_Choice()        
+        
         if player_choice == "attack":
-            wolf_hp = wolf_hp - ( Atk - wolf_def)
-            print("You have dealt " + str(Atk - wolf_def) + " damage to the wolf.\n")
-            print("The wolf now has " + str(wolf_hp) + " hp left\n")
-            if wolf_hp <= 0:
-                print("You have slain the wolf\n" )
-                Hp = 100
-                Atk = 17
-                Def = 3
-            else:
-                Wolf_Turn()
+            wolfHp = attackObject(wolfHp, playerAtk, wolfDef, wolfName)
+            
         elif player_choice == "defend":
-            Def = Def + 3
-            print("Your defense has increased by 3\n")
-            Wolf_Turn()
+            # Changed the hardcoded '3' to a variable; better style then putting '3' multiple places
+            playerDefIncrease = 3
+            playerDef = playerDef + playerDefIncrease
+            print("Your defense has increased by " + str(playerDefIncrease) + ".\n")
+            
         elif player_choice == "focus":
-            Atk = Atk + 7
-            print("Your attack has increased by 7\n")
-            Wolf_Turn()
+            # Changed the hardcoded '7' to a variable; better style then putting '7' multiple places
+            playerAtkIncrease = 3
+            playerAtk = playerAtk + playerAtkIncrease
+            print("Your attack has increased by " + str(playerAtkIncrease) + ".\n")
+            
         elif player_choice == "heal":
-            Hp = Hp + 18
-            print("Your health points have been raised by 18\n")
-            print(Hp)
-            Wolf_Turn()
+            # Changed the hardcoded '18' to a variable; better style then putting '18' multiple places
+            playerHealAmount = 8
+            playerHp = playerHp + playerHealAmount
+            print("Your health points have been raised by " + str(playerHealAmount) + ".\n")
+            print("Your new HP is " + str(playerHp) + ".\n")
+            
         else:
-            print("Please select an either Attack, Defend, Focus, or Heal\n")
-            Player_Turn_Wolf()
+            # This is an error handling case; we should never execute this block of code
+            print("How did we get here?")
+            assert(False)
+            
+        # If the wolf is dead, we win!
+        if (wolfHp <= 0):
+            print("The soul of the wolf is absorbed into you\n")
+            print("Atk increased by 3\n")
+            print("Def increased by 1\n")
+            print("Hp increased by 25\n")
+            time.sleep(2.5)
+            
+            # Break out of the loop and function
+            return True
+        
+        # Now the wolf gets to try and kill us
+        playerHp = Wolf_Turn(playerHp, wolfAtk, playerDef)
+        
+        # If we are dead, then we don't win :'(
+        if (playerHp <= 0):
+            print("You die, the wolf feeds on your corpse")
+            return False
 
-def Wolf_Turn():
-        global Def
-        global Hp
-        wolf_dmg = 14
-        wolf_hp = 80
-        wolf_def = 0
-        misschance = random.randint(1, 11)
-        if misschance <= 8:
-            Hp = Hp - (wolf_dmg - Def)
-            print("The wolf slashes and deals " + str(wolf_dmg - Def) + " damage\n")
-            print("The player now has " + str(Hp) + " Left\n")
-            if Hp > 0:
-                Player_Turn_Wolf()
-            else:
-                print("YOU HAVE DIED GAME OVER")
-                life = False
+def Minataur_Battle():
+    print("You engage in battle with the Minitour")
+
+
+    playerName = PLAYER_NAME
+    playerHp = 125
+    playerAtk = 20
+    playerDef = 4
+
+    miniName = MINATAUR_NAME
+    miniHp = 200
+    miniAtk = 18
+    miniDef = 9
+
+      # We want to loop until we explictly reach a conclusion from within the loop
+    while (True):
+        # Get the player's action choice. This function should always give us a valid value
+        player_choice = Get_Player_Choice()        
+        
+        if player_choice == "attack":
+            miniHp = attackObject(miniHp, playerAtk, miniDef, miniName)
+            
+        elif player_choice == "defend":
+            # Changed the hardcoded '3' to a variable; better style then putting '3' multiple places
+            playerDefIncrease = 3
+            playerDef = playerDef + playerDefIncrease
+            print("Your defense has increased by " + str(playerDefIncrease) + ".\n")
+            
+        elif player_choice == "focus":
+            # Changed the hardcoded '7' to a variable; better style then putting '7' multiple places
+            playerAtkIncrease = 3
+            playerAtk = playerAtk + playerAtkIncrease
+            print("Your attack has increased by " + str(playerAtkIncrease) + ".\n")
+            
+        elif player_choice == "heal":
+            # Changed the hardcoded '18' to a variable; better style then putting '18' multiple places
+            playerHealAmount = 8
+            playerHp = playerHp + playerHealAmount
+            print("Your health points have been raised by " + str(playerHealAmount) + ".\n")
+            print("Your new HP is " + str(playerHp) + ".\n")
+            
         else:
-            print("The wolf stumbles and misses its attack")
-            Player_Turn_Wolf()
-          
+            # This is an error handling case; we should never execute this block of code
+            print("How did we get here?")
+            assert(False)
+            
+        # If the wolf is dead, we win!
+        if (miniHp <= 0):
+            print("You win, dude.")
+            
+            # Break out of the loop and function
+            return True
+        
+        # Now the wolf gets to try and kill us
+        playerHp = Wolf_Turn(playerHp, wolfAtk, playerDef)
+        
+        # If we are dead, then we don't win :'(
+        if (playerHp <= 0):
+            print("You ded, son.")
+            return False
+
+    
+def Get_Player_Choice():
+    valid_choices = [
+        "attack",
+        "defend",
+        "focus",
+        "heal"
+    ]
+    
+    # Btw, POGGERS choice to call ".lower().strip()" here. Input sanitation like this is key to good
+    # programs. Idk if you thought to do this or someone else did, but it's absolutely the right call.
+    player_choice = input("What will you do Attack, Defend, Focus, or Heal\n").lower().strip()
+
+    # Make sure the user gave us a valid choice, and berate them until they do
+    while (player_choice not in valid_choices):
+        print("Please select an either Attack, Defend, Focus, or Heal\n")
+        player_choice = input("What will you do Attack, Defend, Focus, or Heal\n").lower().strip()  
+    
+    return player_choice
+
+def Wolf_Turn(oldPlayerHp, wolfAtk, playerDef):
+    # By default, the player's new hp is the same as the player's old hp. This handles the case where
+    # the wolf misses.
+    newPlayerHp = oldPlayerHp
+
+    misschance = random.randint(1, 11)
+    if misschance <= 8:
+        # Using max() so that we don't deal negative damage
+        damage = max(wolfAtk - playerDef, 0)
+        newPlayerHp = oldPlayerHp - damage
+    
+        print("The wolf slashes and deals " + str(damage) + " damage\n")
+        print("The player now has " + str(newPlayerHp) + " HP left\n")
+        
+    else:
+        print("The wolf stumbles and misses its attack")
+        
+    return newPlayerHp
+
+def Minataur_Turn(oldPlayerHp, miniAtk, playerDef):
+    # By default, the player's new hp is the same as the player's old hp. This handles the case where
+    # the wolf misses.
+    newPlayerHp = oldPlayerHp
+
+    misschance = random.randint(1, 11)
+    if misschance <= 8:
+        # Using max() so that we don't deal negative damage
+        damage = max(wolfAtk - playerDef, 0)
+        newPlayerHp = oldPlayerHp - damage
+    
+        print("The wolf slashes and deals " + str(damage) + " damage\n")
+        print("The player now has " + str(newPlayerHp) + " HP left\n")
+        
+    else:
+        print("The wolf stumbles and misses its attack")
+        
+              
 def intro():
     print("This is the story of when ,Jotaro a young man destined to battle the dastardly DIO, approaches DIO's castle in order to challenge him\n")
     time.sleep(2)
@@ -127,24 +264,43 @@ def intro():
     print("He hears movement out of the corner of his eye, he jerks around desperatly attempting to catch full sight of this hidden creature\n")
     time.sleep(2)
     print("Then a growl as a shadowy figure leaps at Jotaro\n")
-    Wolf_Battle()
+    
+    
+    
+def attackObject(oldHp, attackerAtk, defenderDef, defenderName):
+    damage = max(attackerAtk - defenderDef, 0)
+    newHp = oldHp - damage
+    print("You have dealt " + str(damage) + " damage to the " + defenderName + ".\n")
+    print("The " + defenderName + " now has " + str(newHp) + " hp left\n")
+    return newHp
 
 
 def story1():
-  print("You stand over the corpse of the wolf, your breathing heavy from the first real battle in weeks.\n")
-  time.sleep(2)
-  print("You notice a door directly in front of you with words carved into it reading,\n")
-  time.sleep(2)
-  print("COME JOTARO IF YOU DARE\n")
-  time.sleep(2)
-
-print(instructions_message)
-Start = input("Do you wish to play the game (Y/N)").lower()
-if Start == "y":
-    intro()
-    while life == True:
-      story1()
-else:
-    print("Thats too bad. Have a nice day.")
-
-
+    print("You stand over the corpse of the wolf, your breathing heavy from the first real battle in weeks.\n")
+    time.sleep(2)
+    print("You notice a door directly in front of you with words carved into it reading,\n")
+    time.sleep(2)
+    print("COME JOTARO IF YOU DARE\n")
+    time.sleep(2)
+    print("You gladly welcome the challenge.\n")
+    time.sleep(2)
+    print("You have been studying Dio's palace for months.\n")
+    time.sleep(2)
+    print("You know that this was the first test and that there are still two more tests before you can face DIO\n")
+    time.sleep(2)
+    print("You smile at the thought of two more fights then you force open the door\n")
+    time.sleep(2)
+    print("You stand at the door way to a stadium like room.\n")
+    time.sleep(2)
+    print("In the center of this stadium is a large minataur.\n")
+    time.sleep(2)
+    print("a'Hah so this is the human lord DIO told me about'a\n")
+    time.sleep(2)
+    print("He looks strong with his ripped physique and menacing presence\n")
+    time.sleep(2)
+    print("You approach him and prepare to battle\n")
+    
+    
+    
+# Call main() to start the program!
+main()
