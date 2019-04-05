@@ -518,7 +518,7 @@ def intro():
     time.sleep(2)
     print("You emerge from the dark woods wearing your modified black trench coat and gold chain.\n")
     time.sleep(2)
-    print("Sporting your iconic black hat with gold trim you stands before the lumbering doors to DIO's magnificent palace")
+    print("Sporting your iconic black hat with gold trim you stands before the lumbering doors to DIO's magnificent palace\n")
     time.sleep(2)
     print("You push against the palace doors and they grind open.\n")
     time.sleep(2)
