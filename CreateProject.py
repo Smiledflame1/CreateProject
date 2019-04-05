@@ -11,7 +11,8 @@ import time
 # Also, it's typically convention to do globals a full caps just to distinguish them.
 PLAYER_NAME = "Jotaro"
 WOLF_NAME = "Good Boy" # I gave the wolf a new name too :P
-MINATAUR_NAME = "Bigoddeggleston" #Minataur's name
+MINATAUR_NAME = "Minataur Peggy" #Minataur's name
+GUARDIAN_NAME = "Guardian Vanilla Ice" #Guardians name
 
 INSTRUCTIONS_MESSAGE = """Hello and welcome to this action adventure game.
 This will be your instructions for the game.
@@ -37,7 +38,7 @@ To view your stats at any time type stats() and your stats page will apear.
 # It's a good habit to put the lowest level instructions in a function. Typically, that function is 
 # called main(). We call main() at the end of this file
 def main():
-    Minataur_Battle()
+    Guardian_Battle()
     #print(INSTRUCTIONS_MESSAGE)
     #Start = input("Do you wish to play the game (Y/N)").lower()
     #if Start == "y":
@@ -45,7 +46,9 @@ def main():
         #playerWon = Wolf_Battle()
         #while playerWon == True:
           #story1()
-            
+          #story2()
+          
+        
     #else:
         #print("Thats too bad. Have a nice day.")
         
@@ -176,7 +179,11 @@ def Minataur_Battle():
             
         # If the wolf is dead, we win!
         if (miniHp <= 0):
-            print("You win, dude.")
+            print("The soul of the Minataur is absorbed into you\n")
+            print("Atk increased by 4\n")
+            print("Def increased by 1\n")
+            print("Hp increased by 50\n")
+            time.sleep(2.5)
             
             # Break out of the loop and function
             return True
@@ -187,8 +194,102 @@ def Minataur_Battle():
         # If we are dead, then we don't win :'(
         if (playerHp <= 0):
             print("You lie on the ground beaten and battered the life fading from your body.\n")
+            time.sleep(2)
             print("'You were a tough opponent lord DIO was right to send me against you'\n")
+            time.sleep(2)
             print("You dont respond because you cant, you just lay there untill finally your eyes close forever\n")
+            time.sleep(2)
+            return False
+
+def Guardian_Battle():
+    #Prints the staring stats for both parties
+    print("You face off against the Guardian Vanilla Ice\n")
+    print("_____________________________________________________________________________________________________________________________________________________________________________\n")
+    print("Player Hp: 175\n")
+    print("Player Atk: 24\n")
+    print("Player Def: 5\n")
+    print("Guardian Hp: 300\n")
+    print("Guardian Atk: 27\n")
+    print("Guardian Def: 11\n")
+    print("_____________________________________________________________________________________________________________________________________________________________________________\n")
+
+    playerName = PLAYER_NAME
+    playerHp = 175
+    playerAtk = 24
+    playerDef = 5
+
+    guardName = GUARDIAN_NAME
+    guardHp = 300
+    guardAtk = 27
+    guardDef = 11
+
+      # We want to loop until we explictly reach a conclusion from within the loop
+    while (True):
+        # Get the player's action choice. This function should always give us a valid value
+        player_choice = Get_Player_Choice()        
+        
+        if player_choice == "attack":
+            guardHp = attackObject(guardHp, playerAtk, guardDef, guardName)
+            
+        elif player_choice == "defend":
+            # Changed the hardcoded '3' to a variable; better style then putting '3' multiple places
+            playerDefIncrease = 3
+            playerDef = playerDef + playerDefIncrease
+            print("Your defense has increased by " + str(playerDefIncrease) + ".\n")
+            
+        elif player_choice == "focus":
+            # Changed the hardcoded '7' to a variable; better style then putting '7' multiple places
+            playerAtkIncrease = 3
+            playerAtk = playerAtk + playerAtkIncrease
+            print("Your attack has increased by " + str(playerAtkIncrease) + ".\n")
+            
+        elif player_choice == "heal":
+            # Changed the hardcoded '18' to a variable; better style then putting '18' multiple places
+            playerHealAmount = 8
+            playerHp = playerHp + playerHealAmount
+            print("Your health points have been raised by " + str(playerHealAmount) + ".\n")
+            print("Your new HP is " + str(playerHp) + ".\n")
+            
+        else:
+            # This is an error handling case; we should never execute this block of code
+            print("How did we get here?")
+            assert(False)
+            
+        # If the wolf is dead, we win!
+        if (guardHp <= 0):
+            print("The soul of the Guardian is absorbed into you\n")
+            print("Atk increased by 6\n")
+            print("Def increased by 5\n")
+            print("Hp increased by 125\n")
+            time.sleep(2.5)
+            
+            # Break out of the loop and function
+            return True
+        
+        # Now the wolf gets to try and kill us
+        playerHp = Guardian_Turn(playerHp, guardAtk, playerDef)
+        
+        # If we are dead, then we don't win :'(
+        if (playerHp <= 0):
+            print("Cream pierces your body causing you to scream in agony.\n")
+            time.sleep(2)
+            print("'Now you realize it is folly to challenge lord DIO'\n")
+            time.sleep(2)
+            print("Vanilla Ice removes the sword from your body leaving a large hole in you.\n")
+            time.sleep(2)
+            print("You failed.\n")
+            time.sleep(2)
+            print("You weren't even strong enough to defeat Vanilla Ice, why did you beleive you could defeat DIO")
+            time.sleep(2)
+            print("These thoughts linger in your mind as you slowly bleed out on the ground.")
+            time.sleep(2)
+            print("Then in your final moments your thoughts change to your mother and sister.")
+            time.sleep(2)
+            print("You wonder what will happen when you don't return.\n")
+            time.sleep(2)
+            print("You hope they can move on and that their grief subsides quick enough.")
+            time.sleep(2)
+            print("And with that your last spurts of life give out and it cuts to black.")
             return False
 
     
@@ -246,8 +347,29 @@ def Minataur_Turn(oldPlayerHp, miniAtk, playerDef):
         
     else:
         print("In the Minitaurs arrogence he taunts you instead of attacking\n")
+
+    return newPlayerHp
+
+def Guardian_Turn(oldPlayerHp, guardAtk, playerDef):
+    # By default, the player's new hp is the same as the player's old hp. This handles the case where
+    # the wolf misses.
+    newPlayerHp = oldPlayerHp
+
+    misschance = random.randint(1, 11)
+    if misschance <= 8:
+        # Using max() so that we don't deal negative damage
+        damage = max(guardAtk - playerDef, 0)
+        newPlayerHp = oldPlayerHp - damage
+    
+        print("Vanilla Ice slashes you with Cream dealing " + str(damage) + " damage\n")
+        print("The player now has " + str(newPlayerHp) + " HP left\n")
         
-              
+    else:
+        print("The guardian stalls to goad you into a rage to make the battle tougher.\n")
+
+    return newPlayerHp
+        
+#The begining of the story first thing that plays when you start the game            
 def intro():
     print("This is the story of when ,Jotaro a young man destined to battle the dastardly DIO, approaches DIO's castle in order to challenge him\n")
     time.sleep(2)
@@ -276,9 +398,8 @@ def attackObject(oldHp, attackerAtk, defenderDef, defenderName):
     print("The " + defenderName + " now has " + str(newHp) + " hp left\n")
     return newHp
 
-
+#The story after you slay the wolf instigates the fight against the Minotaur 
 def story1():
-<<<<<<< HEAD
     print("You stand over the corpse of the wolf, your breathing heavy from the first real battle in weeks.\n")
     time.sleep(2)
     print("You notice a door directly in front of you with words carved into it reading,\n")
@@ -302,25 +423,48 @@ def story1():
     print("He looks strong with his ripped physique and menacing presence\n")
     time.sleep(2)
     print("You approach him and prepare to battle\n")
-    
-    
+    Minataur_Battle()
+#THe story after the Minotaur instigates the fight with the Guardian     
+def story2():
+    print("The monstrous Minataur lays motionless on the ground its corpse still demanding great attention\n")
+    time.sleep(2)
+    print("You just stand there for a moment absolutley stunned.\n")
+    time.sleep(2)
+    print("Sweat pours profusley from your brow, your muscles stiff from the battle.\n")
+    time.sleep(2)
+    print("You drop to one knee to regain your breath, this battle was tough as the Minataurs flesh was hard to pierce for your enhanced hands.\n")
+    time.sleep(2)
+    print("You camp for 15 minutes than move past the corpse to exit the stadium.\n")
+    time.sleep(2)
+    print("You exit the stadium and find yourself in a hall with statues acting as pillar along the sides of the hall\n")
+    time.sleep(2)
+    print("A large metalic figure stands before you, cloaked in shadow\n")
+    time.sleep(2)
+    print("Then a red light awakens from the eyes of this figure.\n")
+    time.sleep(2)
+    print("'Have you come to slay my master little Jotaro'\n")
+    time.sleep(2)
+    print("You recognize that voice, devoid of feelings or compassion\n")
+    time.sleep(2)
+    print("Its the voice of DIO's most loyal minion and the strongest\n")
+    time.sleep(2)
+    print("He has slautered entire villages at DIO's command.\n")
+    time.sleep(2)
+    print("Nicknamed as DIO's guardian, just mentioning his name strikes fear in the hearts of man.\n")
+    time.sleep(2)
+    print("VANNILA ICE\n")
+    time.sleep(2)
+    print("The torches along the wall ignite and reveal Vanilla Ice's form.\n")
+    time.sleep(2)
+    print("A enchanted suit of obsidian armor towering above you.\n")
+    time.sleep(2)
+    print("He wields the demon blade CREAM, a blade which has conquered countless battlefields.\n")
+    time.sleep(2)
+    print("'Now come little Jotaro show me how much you have grown since our last battle'\n")
+    time.sleep(2)
+    print("Not one to keep people waiting you let out a battlecry and charge the guardian\n")
+    time.sleep(2)
+    Guardian_Battle()
     
 # Call main() to start the program!
 main()
-=======
-  print("You stand over the corpse of the wolf, your breathing heavy from the first real battle in weeks.\n")
-  time.sleep(2)
-  print("You notice a door directly in front of you with words carved into it reading,\n")
-  time.sleep(2)
-  print("COME JOTARO IF YOU DARE\n")
-  time.sleep(2)
-
-print(instructions_message)
-Start = input("Do you wish to play the game (Y/N)").lower()
-if Start == "y":
-    intro()
-    while life == True:
-      story1()
-else:
-    print("Thats too bad. Have a nice day.")
->>>>>>> c694e7ca1f49cdc31054f29098c7d1d7f1dd74db
