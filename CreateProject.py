@@ -5,82 +5,77 @@
 import random
 import time
 
-# Don't need any global variables any more. However, global constants are fine! Thus, I'm going to leave
-# player and wolf names as globals since they're constant and we're never changing them.
-#
-# Also, it's typically convention to do globals a full caps just to distinguish them.
+# Names as global constants 
 PLAYER_NAME = "Jotaro"
-WOLF_NAME = "Good Boy" # I gave the wolf a new name too :P
+WOLF_NAME = "Good Boy" # Wolfs Name 
 MINATAUR_NAME = "Minataur Peggy" #Minataur's name
 GUARDIAN_NAME = "Guardian Vanilla Ice" #Guardians name
+DIO_NAME = "Master of all DIO" #Dio's name 
 
-INSTRUCTIONS_MESSAGE = """Hello and welcome to this action adventure game.
-This will be your instructions for the game.
-This will be your only time to view the instructions so please do pay attention and go slow.
-Your stats are made up of three different catagories Health Points(HP), Attack(ATK), and Defense(DEF)
-HP is how much damage the character can take, Attack is how much damage the player does to enemies, and Defense is how much damage is mitigated from the enemy attacks
-You will randomly encounter an enemy from a set of 3 different monsters which changes depending on the floor your on
-Battle takes place 1 v 1 with the player attacking first.
-There are 4 options while engaged in battle.
-Attack, Defend, Focus and Heal
-Attack deals your attack stat in damage to the enemy
-Defend increases your defense stat for that battle only
-Focus increases your attack stat for that battle only
-Heal restores the HP of your character but can only be uesd 3 times each fight
-All of your base stats reset to what they were before the battle so focus and defend dont carry over
-The way to progress through this game is to defeat a set amount of enemies per floor to fight the floor guardian.
-After defeating the floor guardian you move to the next floor to fight a new set of monsters.
-After going through all the floors you will face against the boss of the game.
-Please have fun and enjoy the game.
-To view your stats at any time type stats() and your stats page will apear.
+INSTRUCTIONS_MESSAGE = """Hello and welcome to this adventure game.
+This game is played by battling monsters in a linear preordered fashion. Before fighting the boss of the game.
+Too play the game you will have to choose on of 4 options when a battle starts,
+Those 4 options are:
+Attack - Dealing damage to the enemy
+Defend - raises your defense by 3
+Focus - raises your attack by 7
+Heal - Heals yourself for 18 damage(Can go over the intial health value)
+Stat changes do no persist into the next battle as the stats are reset.
+After a battle you gain stats by "Absorbing the soul of the monster"
+This stat change does persist.
+Both you and the monster have 3 main base stats
+Health Points(hp) - How much damage you can take
+Defense(def) - subtracts from the intitial damage one recieves from the enemy 
+Attack(atk) - how much damage one does to an enemy is decreased by armor of the opponent
+You always go first and the enemy attacks second
+There is a chance the enemy's attack will miss in which that turn is wasted by the enemy
+That is the basics of this game so now your ready to go!
+Goodluck
 """
 
-# It's a good habit to put the lowest level instructions in a function. Typically, that function is 
-# called main(). We call main() at the end of this file
+# This is how our story will sequentially unfold 
 def main():
-    Guardian_Battle()
-    #print(INSTRUCTIONS_MESSAGE)
-    #Start = input("Do you wish to play the game (Y/N)").lower()
-    #if Start == "y":
-        #intro()
-        #playerWon = Wolf_Battle()
-        #while playerWon == True:
-          #story1()
-          #story2()
+    print(INSTRUCTIONS_MESSAGE)
+    Start = input("Do you wish to play the game (Y/N)").lower()
+    if Start == "y":
+        intro()
+        playerWon = Wolf_Battle()
+        while playerWon == True:
+          story1()
+          story2()
+          story3()
+          ending()
           
         
     #else:
         #print("Thats too bad. Have a nice day.")
         
 
-def stats():
-    print("STATS:")
-    print("")
-    print(Name)
-    print("")
-    print(Hp)
-    print("")
-    print(Atk)
-    print("")
-    print(Def)
-    print("")
-
-    
+#The player turn for the wolf battle and it checks for win conditions     
 def Wolf_Battle():
     print("A Large Wolf attacks you!")
+    print("_____________________________________________________________________________________________________________________________________________________________________________\n")
+    print("Player Hp: 100\n")
+    print("Player Atk: 17\n")
+    print("Player Def: 3\n")
+    print("Wolf Hp: 80\n")
+    print("Wolf Atk: 11\n")
+    print("Wolf Def: 0\n")
+    print("_____________________________________________________________________________________________________________________________________________________________________________\n")
+
     
     # Set the hp, attack, and defense for the player and wolf
-    playerName = PLAYER_NAME # using our global
+    playerName = PLAYER_NAME
     playerHp = 100
     playerAtk = 17
     playerDef = 3
     
-    wolfName = WOLF_NAME # using our global
+    wolfName = WOLF_NAME 
     wolfHp = 80
     wolfAtk = 11
     wolfDef = 0
     
-    # We want to loop until we explictly reach a conclusion from within the loop
+    # loop until we explictly reach a conclusion from within the loop
     while (True):
         # Get the player's action choice. This function should always give us a valid value
         player_choice = Get_Player_Choice()        
@@ -89,21 +84,21 @@ def Wolf_Battle():
             wolfHp = attackObject(wolfHp, playerAtk, wolfDef, wolfName)
             
         elif player_choice == "defend":
-            # Changed the hardcoded '3' to a variable; better style then putting '3' multiple places
             playerDefIncrease = 3
             playerDef = playerDef + playerDefIncrease
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("Your defense has increased by " + str(playerDefIncrease) + ".\n")
             
         elif player_choice == "focus":
-            # Changed the hardcoded '7' to a variable; better style then putting '7' multiple places
-            playerAtkIncrease = 3
+            playerAtkIncrease = 7
             playerAtk = playerAtk + playerAtkIncrease
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("Your attack has increased by " + str(playerAtkIncrease) + ".\n")
             
         elif player_choice == "heal":
-            # Changed the hardcoded '18' to a variable; better style then putting '18' multiple places
-            playerHealAmount = 8
+            playerHealAmount = 18
             playerHp = playerHp + playerHealAmount
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("Your health points have been raised by " + str(playerHealAmount) + ".\n")
             print("Your new HP is " + str(playerHp) + ".\n")
             
@@ -112,12 +107,14 @@ def Wolf_Battle():
             print("How did we get here?")
             assert(False)
             
-        # If the wolf is dead, we win!
+        # If the wolf is dead, we win! and we move on
         if (wolfHp <= 0):
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("The soul of the wolf is absorbed into you\n")
             print("Atk increased by 3\n")
             print("Def increased by 1\n")
             print("Hp increased by 25\n")
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             time.sleep(2.5)
             
             # Break out of the loop and function
@@ -126,13 +123,24 @@ def Wolf_Battle():
         # Now the wolf gets to try and kill us
         playerHp = Wolf_Turn(playerHp, wolfAtk, playerDef)
         
-        # If we are dead, then we don't win :'(
+        # If we are dead, then we don't win :'( ad the game stops
         if (playerHp <= 0):
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("You die, the wolf feeds on your corpse")
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             return False
 
 def Minataur_Battle():
     print("You engage in battle with the Minitour")
+    print("_____________________________________________________________________________________________________________________________________________________________________________\n")
+    print("Player Hp: 125\n")
+    print("Player Atk: 20\n")
+    print("Player Def: 4\n")
+    print("Minataur Hp: 200\n")
+    print("Minataur Atk: 18\n")
+    print("Minataur Def: 9\n")
+    print("_____________________________________________________________________________________________________________________________________________________________________________\n")
+
 
 
     playerName = PLAYER_NAME
@@ -154,21 +162,21 @@ def Minataur_Battle():
             miniHp = attackObject(miniHp, playerAtk, miniDef, miniName)
             
         elif player_choice == "defend":
-            # Changed the hardcoded '3' to a variable; better style then putting '3' multiple places
             playerDefIncrease = 3
             playerDef = playerDef + playerDefIncrease
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("Your defense has increased by " + str(playerDefIncrease) + ".\n")
             
         elif player_choice == "focus":
-            # Changed the hardcoded '7' to a variable; better style then putting '7' multiple places
-            playerAtkIncrease = 3
+            playerAtkIncrease = 7
             playerAtk = playerAtk + playerAtkIncrease
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("Your attack has increased by " + str(playerAtkIncrease) + ".\n")
             
         elif player_choice == "heal":
-            # Changed the hardcoded '18' to a variable; better style then putting '18' multiple places
-            playerHealAmount = 8
+            playerHealAmount = 18
             playerHp = playerHp + playerHealAmount
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("Your health points have been raised by " + str(playerHealAmount) + ".\n")
             print("Your new HP is " + str(playerHp) + ".\n")
             
@@ -177,27 +185,31 @@ def Minataur_Battle():
             print("How did we get here?")
             assert(False)
             
-        # If the wolf is dead, we win!
+        # If the Minataur is dead, we win! and move on
         if (miniHp <= 0):
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("The soul of the Minataur is absorbed into you\n")
             print("Atk increased by 4\n")
             print("Def increased by 1\n")
             print("Hp increased by 50\n")
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             time.sleep(2.5)
             
             # Break out of the loop and function
             return True
         
-        # Now the wolf gets to try and kill us
+        # Now the Minataur gets to try and kill us
         playerHp = Minataur_Turn(playerHp, miniAtk, playerDef)
         
-        # If we are dead, then we don't win :'(
+        # If we are dead, then we don't win :'( and the game ends
         if (playerHp <= 0):
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("You lie on the ground beaten and battered the life fading from your body.\n")
             time.sleep(2)
             print("'You were a tough opponent lord DIO was right to send me against you'\n")
             time.sleep(2)
             print("You dont respond because you cant, you just lay there untill finally your eyes close forever\n")
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             time.sleep(2)
             return False
 
@@ -232,21 +244,21 @@ def Guardian_Battle():
             guardHp = attackObject(guardHp, playerAtk, guardDef, guardName)
             
         elif player_choice == "defend":
-            # Changed the hardcoded '3' to a variable; better style then putting '3' multiple places
             playerDefIncrease = 3
             playerDef = playerDef + playerDefIncrease
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("Your defense has increased by " + str(playerDefIncrease) + ".\n")
             
         elif player_choice == "focus":
-            # Changed the hardcoded '7' to a variable; better style then putting '7' multiple places
-            playerAtkIncrease = 3
+            playerAtkIncrease = 7
             playerAtk = playerAtk + playerAtkIncrease
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("Your attack has increased by " + str(playerAtkIncrease) + ".\n")
             
         elif player_choice == "heal":
-            # Changed the hardcoded '18' to a variable; better style then putting '18' multiple places
-            playerHealAmount = 8
+            playerHealAmount = 18
             playerHp = playerHp + playerHealAmount
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("Your health points have been raised by " + str(playerHealAmount) + ".\n")
             print("Your new HP is " + str(playerHp) + ".\n")
             
@@ -255,22 +267,25 @@ def Guardian_Battle():
             print("How did we get here?")
             assert(False)
             
-        # If the wolf is dead, we win!
+        # If the guardian is dead, we win! and move on
         if (guardHp <= 0):
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("The soul of the Guardian is absorbed into you\n")
             print("Atk increased by 6\n")
             print("Def increased by 5\n")
             print("Hp increased by 125\n")
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             time.sleep(2.5)
             
             # Break out of the loop and function
             return True
         
-        # Now the wolf gets to try and kill us
+        # Now the guardian gets to try and kill us
         playerHp = Guardian_Turn(playerHp, guardAtk, playerDef)
         
-        # If we are dead, then we don't win :'(
+        # If we are dead, then we don't win :'( and the game ends
         if (playerHp <= 0):
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             print("Cream pierces your body causing you to scream in agony.\n")
             time.sleep(2)
             print("'Now you realize it is folly to challenge lord DIO'\n")
@@ -279,21 +294,121 @@ def Guardian_Battle():
             time.sleep(2)
             print("You failed.\n")
             time.sleep(2)
-            print("You weren't even strong enough to defeat Vanilla Ice, why did you beleive you could defeat DIO")
+            print("You weren't even strong enough to defeat Vanilla Ice, why did you beleive you could defeat DIO\n")
             time.sleep(2)
-            print("These thoughts linger in your mind as you slowly bleed out on the ground.")
+            print("These thoughts linger in your mind as you slowly bleed out on the ground.\n")
             time.sleep(2)
-            print("Then in your final moments your thoughts change to your mother and sister.")
+            print("Then in your final moments your thoughts change to your mother and sister.\n")
             time.sleep(2)
             print("You wonder what will happen when you don't return.\n")
             time.sleep(2)
-            print("You hope they can move on and that their grief subsides quick enough.")
+            print("You hope they can move on and that their grief subsides quick enough.\n")
             time.sleep(2)
-            print("And with that your last spurts of life give out and it cuts to black.")
+            print("And with that your last spurts of life give out and it cuts to black.\n")
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
             return False
+
+def DIO_Battle():
+    #Prints the staring stats for both parties
+    print("You clash with DIO the Master of ALL\n")
+    print("_____________________________________________________________________________________________________________________________________________________________________________\n")
+    print("Player Hp: 300\n")
+    print("Player Atk: 30\n")
+    print("Player Def: 10\n")
+    print("DIO Hp: 500\n")
+    print("DIO Atk: 45\n")
+    print("DIO Def: 15\n")
+    print("_____________________________________________________________________________________________________________________________________________________________________________\n")
+
+    playerName = PLAYER_NAME
+    playerHp = 300
+    playerAtk = 30
+    playerDef = 10
+
+    dioName = DIO_NAME
+    dioHp = 500
+    dioAtk = 45
+    dioDef = 15
+
+      # We want to loop until we explictly reach a conclusion from within the loop
+    while (True):
+        # Get the player's action choice. This function should always give us a valid value
+        player_choice = Get_Player_Choice()        
+        
+        if player_choice == "attack":
+            dioHp = attackObject(dioHp, playerAtk, dioDef, dioName)
+            
+        elif player_choice == "defend":
+            playerDefIncrease = 3
+            playerDef = playerDef + playerDefIncrease
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
+            print("Your defense has increased by " + str(playerDefIncrease) + ".\n")
+            
+        elif player_choice == "focus":
+            playerAtkIncrease = 7
+            playerAtk = playerAtk + playerAtkIncrease
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
+            print("Your attack has increased by " + str(playerAtkIncrease) + ".\n")
+            
+        elif player_choice == "heal":
+            playerHealAmount = 18
+            playerHp = playerHp + playerHealAmount
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
+            print("Your health points have been raised by " + str(playerHealAmount) + ".\n")
+            print("Your new HP is " + str(playerHp) + ".\n")
+            
+        else:
+            # This is an error handling case; we should never execute this block of code
+            print("How did we get here?")
+            assert(False)
+            
+        # If DIO is dead, we win! and instigate the ending
+        if (dioHp <= 0):
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
+            print("The soul of DIO is absorbed into you\n")
+            print("Atk increased by 45\n")
+            print("Def increased by 15\n")
+            print("Hp increased by 500\n")
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
+            time.sleep(2.5)
+            
+            # Break out of the loop and function
+            return True
+        
+        # Now the guardian gets to try and kill us
+        playerHp = DIO_Turn(playerHp, dioAtk, playerDef)
+        
+        # If we are dead, then we don't win :'( and the game ends
+        if (playerHp <= 0):
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
+            print("DIO's power was too much for you after all.\n")
+            time.sleep(2)
+            print("Even after absorbing Vanilla Ice's power, it still paled in comparison to DIO's.\n")
+            time.sleep(2)
+            print("As you lay on the ground face up, looking straight at DIO you feel guilt.\n")
+            time.sleep(2)
+            print("You failed.\n")
+            time.sleep(2)
+            print("After trying so hard and absorbing so much power you still failed.\n")
+            time.sleep(2)
+            print("Dio bends down placing his lips next to your ear.\n")
+            time.sleep(2)
+            print("After that pitiful performence shall I visit your family to tell them the news.\n")
+            time.sleep(2)
+            print("Your thoughts fill with rage as you attempt to headbutt dio. But to no avail.\n")
+            time.sleep(2)
+            print("You can't move not even a bit.\n")
+            time.sleep(2)
+            print("And with those words DIO cackles and raises his boot.\n")
+            time.sleep(2)
+            print("The last thing you see is DIO slamming his boot into your face.\n")
+            print("______________________________________________________________________________________________________________________________________________________________________\n")
+            return False
+
 
     
 def Get_Player_Choice():
+    #Uses a list to define what the player can pick from
     valid_choices = [
         "attack",
         "defend",
@@ -301,8 +416,7 @@ def Get_Player_Choice():
         "heal"
     ]
     
-    # Btw, POGGERS choice to call ".lower().strip()" here. Input sanitation like this is key to good
-    # programs. Idk if you thought to do this or someone else did, but it's absolutely the right call.
+
     player_choice = input("What will you do Attack, Defend, Focus, or Heal\n").lower().strip()
 
     # Make sure the user gave us a valid choice, and berate them until they do
@@ -325,9 +439,11 @@ def Wolf_Turn(oldPlayerHp, wolfAtk, playerDef):
     
         print("The wolf slashes and deals " + str(damage) + " damage\n")
         print("The player now has " + str(newPlayerHp) + " HP left\n")
+        print("______________________________________________________________________________________________________________________________________________________________________\n")
         
     else:
         print("The wolf stumbles and misses its attack")
+        print("______________________________________________________________________________________________________________________________________________________________________\n")
         
     return newPlayerHp
 
@@ -344,9 +460,11 @@ def Minataur_Turn(oldPlayerHp, miniAtk, playerDef):
     
         print("The Minitaurs fist strikes you dealing " + str(damage) + " damage\n")
         print("The player now has " + str(newPlayerHp) + " HP left\n")
+        print("______________________________________________________________________________________________________________________________________________________________________\n")
         
     else:
         print("In the Minitaurs arrogence he taunts you instead of attacking\n")
+        print("______________________________________________________________________________________________________________________________________________________________________\n")
 
     return newPlayerHp
 
@@ -363,43 +481,71 @@ def Guardian_Turn(oldPlayerHp, guardAtk, playerDef):
     
         print("Vanilla Ice slashes you with Cream dealing " + str(damage) + " damage\n")
         print("The player now has " + str(newPlayerHp) + " HP left\n")
+        print("______________________________________________________________________________________________________________________________________________________________________\n")
         
     else:
         print("The guardian stalls to goad you into a rage to make the battle tougher.\n")
+        print("______________________________________________________________________________________________________________________________________________________________________\n")
 
     return newPlayerHp
+
+def DIO_Turn(oldPlayerHp, dioAtk, playerDef):
+    # By default, the player's new hp is the same as the player's old hp. This handles the case where
+    # the wolf misses.
+    newPlayerHp = oldPlayerHp
+
+    misschance = random.randint(1, 11)
+    if misschance <= 8:
+        # Using max() so that we don't deal negative damage
+        damage = max(dioAtk - playerDef, 0)
+        newPlayerHp = oldPlayerHp - damage
+    
+        print("DIO's vast power slams into you dealing " + str(damage) + " damage\n")
+        print("The player now has " + str(newPlayerHp) + " HP left\n")
+        print("______________________________________________________________________________________________________________________________________________________________________\n")
         
+    else:
+        print("DIO remained recoiled from your most recent attack.\n")
+        print("______________________________________________________________________________________________________________________________________________________________________\n")
+
+    return newPlayerHp
+
+
 #The begining of the story first thing that plays when you start the game            
 def intro():
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
     print("This is the story of when ,Jotaro a young man destined to battle the dastardly DIO, approaches DIO's castle in order to challenge him\n")
     time.sleep(2)
-    print("He emerged from the dark woods wearing his modified black trench coat and gold chain.\n")
+    print("You emerge from the dark woods wearing your modified black trench coat and gold chain.\n")
     time.sleep(2)
-    print("Sporting his iconic black hat with gold trim he stands before the lumbering doors to DIO's magnificent palace")
+    print("Sporting your iconic black hat with gold trim you stands before the lumbering doors to DIO's magnificent palace")
     time.sleep(2)
-    print("Jotaro pushes against the palace doors and they grind open.\n")
+    print("You push against the palace doors and they grind open.\n")
     time.sleep(2)
-    print("He was now delving into quite the bizzare adventure with his life on the line.\n")
+    print("You were now delving into quite the bizzare adventure with your life on the line.\n")
     time.sleep(2)
-    print("He enters the dark palace when suddenly the walls burst with light as torches ignite.\n")
+    print("You enter the dark palace when suddenly the walls burst with light as torches ignite.\n")
     time.sleep(2)
-    print("He enters further into the room looking around cautiously wary of any upcoming attacks.\n")
+    print("You enter further into the room looking around cautiously wary of any upcoming attacks.\n")
     time.sleep(2)
-    print("He hears movement out of the corner of his eye, he jerks around desperatly attempting to catch full sight of this hidden creature\n")
+    print("You see movement out of the corner of his eye, you jerk around desperatly attempting to catch full sight of this hidden creature\n")
     time.sleep(2)
-    print("Then a growl as a shadowy figure leaps at Jotaro\n")
+    print("Then a growl as a shadowy figure leaps at You\n")
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
     
     
-    
+#This is our function for when we attack because its more complicated than the other options I made it a function     
 def attackObject(oldHp, attackerAtk, defenderDef, defenderName):
     damage = max(attackerAtk - defenderDef, 0)
     newHp = oldHp - damage
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
     print("You have dealt " + str(damage) + " damage to the " + defenderName + ".\n")
     print("The " + defenderName + " now has " + str(newHp) + " hp left\n")
     return newHp
 
 #The story after you slay the wolf instigates the fight against the Minotaur 
 def story1():
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
     print("You stand over the corpse of the wolf, your breathing heavy from the first real battle in weeks.\n")
     time.sleep(2)
     print("You notice a door directly in front of you with words carved into it reading,\n")
@@ -418,14 +564,16 @@ def story1():
     time.sleep(2)
     print("In the center of this stadium is a large minataur.\n")
     time.sleep(2)
-    print("a'Hah so this is the human lord DIO told me about'a\n")
+    print("'Hah so this is the human lord DIO told me about'\n")
     time.sleep(2)
     print("He looks strong with his ripped physique and menacing presence\n")
     time.sleep(2)
     print("You approach him and prepare to battle\n")
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
     Minataur_Battle()
 #THe story after the Minotaur instigates the fight with the Guardian     
 def story2():
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
     print("The monstrous Minataur lays motionless on the ground its corpse still demanding great attention\n")
     time.sleep(2)
     print("You just stand there for a moment absolutley stunned.\n")
@@ -463,8 +611,75 @@ def story2():
     print("'Now come little Jotaro show me how much you have grown since our last battle'\n")
     time.sleep(2)
     print("Not one to keep people waiting you let out a battlecry and charge the guardian\n")
-    time.sleep(2)
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
     Guardian_Battle()
+
+#Story after beating the guardian and instigates the final battle
+def story3():
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
+    print("Vanilla Ice, the fearsome and legendary guardian of DIO, has been slain.\n")
+    time.sleep(2)
+    print("The once enchanted armor that was his vessle lays beneath your feet cold and powerless.\n")
+    time.sleep(2)
+    print("His soul swirls around you as if resisting you.\n")
+    time.sleep(2)
+    print("Even in death he remains extremley loyal to DIO.\n")
+    time.sleep(2)
+    print("But even his loyalty can not prevent his soul from being absorbed.\n")
+    time.sleep(2)
+    print("You feel his power surge within you and your wounds start to fade.\n")
+    time.sleep(2)
+    print("After the power surge subsists you feel oddly refreshed.\n")
+    time.sleep(2)
+    print("This must be a special attribute of his soul.\n")
+    time.sleep(2)
+    print("Now that your healed theres no need to wait to fight DIO\n")
+    time.sleep(2)
+    print("You push into the throne room to find DIO sitting on the throne.\n")
+    time.sleep(2)
+    print("'Oh if it isn't little Jotaro, Im quite surprised you managed to defeat Vanilla Ice but that just means you have grown.\n")
+    time.sleep(2)
+    print("'Ive come for you DIO.' you move towards him\n")
+    time.sleep(2)
+    print("'Oh? Your approaching me.'\n")
+    time.sleep(2)
+    print("'I can't beat the crap out of you without coming closer.'\n")
+    time.sleep(2)
+    print("'Oh really? Now I am quite intriqued.'\n")
+    time.sleep(2)
+    print("He leaves the throne and walks down to meet you.")
+    time.sleep(2)
+    print("Then you start sprinting towards each other at top speed.\n")
+    time.sleep(2)
+    print("You clash in the middle and a legendary battle begins\n")
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
+    DIO_Battle()
     
+#Is the ending of the game and ends the game
+def ending():
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
+    print("Finally after all this time you have finally beat him.\n")
+    time.sleep(2)
+    print("You spent all those years training and slaying monsters for this moment.\n")
+    time.sleep(2)
+    print("As his shadow enters your body you feel fulfilled.\n")
+    time.sleep(2)
+    print("Now the world can rest easy knowing that DIO shall no longer threaten mankind.\n")
+    time.sleep(2)
+    print("DIO's soul seems to have the same properties as Vanilla Ice's because after absorbing it you feel refreshed.\n")
+    time.sleep(2)
+    print("You exit the throne backtracking to the entrance of the palace.\n")
+    time.sleep(2)
+    print("As you walk back seeing all of the previous battles, it all feels worth it.\n")
+    time.sleep(2)
+    print("The blood, sweat, and pain all feels like nothing in comparison to this feeling of accomplishment.\n")
+    time.sleep(2)
+    print("Now you can return to the village and relax with your mother and sister.\n")
+    time.sleep(2)
+    print("So our hero returns to his village, and relaxs never again having to worry about DIO.\n")
+    time.sleep(3)
+    print("Or so he thought.")
+    print("______________________________________________________________________________________________________________________________________________________________________\n")
+    return False
 # Call main() to start the program!
 main()
