@@ -39,12 +39,29 @@ def main():
     Start = input("Do you wish to play the game (Y/N)").lower()
     if Start == "y":
         intro()
-        playerWon = Wolf_Battle()
-        while playerWon == True:
-          story1()
-          story2()
-          story3()
-          ending()
+        if Wolf_Battle() == True:
+            story1()
+        else:
+            print("GAME OVER\n")
+            return
+        if Minataur_Battle() == True:
+            story2()
+        else:
+            print("GAME OVER")
+            return
+        if Guardian_Battle() == True:
+            story3()
+        else:
+            print("GAME OVER")
+            return
+        if DIO_Battle() == True:
+            ending()
+        else:
+            print("GAME OVER")
+            return
+        
+            
+        
           
         
     #else:
@@ -210,7 +227,6 @@ def Minataur_Battle():
             time.sleep(2)
             print("You dont respond because you cant, you just lay there untill finally your eyes close forever\n")
             print("______________________________________________________________________________________________________________________________________________________________________\n")
-            time.sleep(2)
             return False
 
 def Guardian_Battle():
@@ -375,7 +391,7 @@ def DIO_Battle():
             # Break out of the loop and function
             return True
         
-        # Now the guardian gets to try and kill us
+        # Now DIO gets to try and kill us
         playerHp = DIO_Turn(playerHp, dioAtk, playerDef)
         
         # If we are dead, then we don't win :'( and the game ends
@@ -570,7 +586,7 @@ def story1():
     time.sleep(2)
     print("You approach him and prepare to battle\n")
     print("______________________________________________________________________________________________________________________________________________________________________\n")
-    Minataur_Battle()
+    
 #THe story after the Minotaur instigates the fight with the Guardian     
 def story2():
     print("______________________________________________________________________________________________________________________________________________________________________\n")
@@ -612,7 +628,7 @@ def story2():
     time.sleep(2)
     print("Not one to keep people waiting you let out a battlecry and charge the guardian\n")
     print("______________________________________________________________________________________________________________________________________________________________________\n")
-    Guardian_Battle()
+   
 
 #Story after beating the guardian and instigates the final battle
 def story3():
@@ -653,7 +669,7 @@ def story3():
     time.sleep(2)
     print("You clash in the middle and a legendary battle begins\n")
     print("______________________________________________________________________________________________________________________________________________________________________\n")
-    DIO_Battle()
+
     
 #Is the ending of the game and ends the game
 def ending():
